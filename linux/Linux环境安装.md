@@ -70,13 +70,55 @@
 
 #### 三、网络配置
 
-#### 1、仅主机模式
+#### 1、桥接模式
 
-​	在IP不够用的情况下容易造成IP冲突
+​	同一个网段 占用同一个网段的IP. 在IP不够用的情况下容易造成IP冲突
 
 #### 2、NAT模式
 
-​	相当于使用的是主机IP做的代理, 里面用的VM8是代理路由	
+​	相当于使用的是主机IP做的代理, 里面用的Vmnet8是代理路由
+
+​	centOS6用的是 eth0
+
+​	centOS7用的是 eth33 	
+
+​	是可以通过修改配置文件去整, 
+
+​	**/etc/sysconfig/network-scripts/ifcfg-eth0**
+
+```
+DEVICE=eth0
+TYPE=Ethernet
+UUID=d9e88750-f219-4e56-a125-277f432b6905
+ONBOOT=yes
+NM_CONTROLLED=yes
+BOOTPROTO=dhcp
+DEFROUTE=yes
+IPV4_FAILURE_FATAL=yes
+IPV6INIT=no
+NAME="System eth0"
+HWADDR=00:0C:29:71:59:16
+PEERDNS=yes
+PEERROUTES=yes
+```
+
+​	配置完成以后 重启网络命令**systemctl restart network**
+
+### 3、仅主机模式
+
+​	独立IP 不能访问
+
+
+
+### 三、Xshell安装使用
+
+### 四、Xftp安装使用
+
+### 五、JDK安装
+
+​	
+
+
 
 ​	
 
