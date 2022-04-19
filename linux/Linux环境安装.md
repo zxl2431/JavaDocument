@@ -240,7 +240,101 @@ PEERROUTES=yes
 
 ### 七、MySql安装
 
+1. 下载mysql
 
+2. 上传到linux  在CRT下,按Alt+P
+
+3. 检查系统上是否安装了mysql( 若安装了就需要先卸载再使用我们自己的)
+
+   ```
+   rpm -qa |grep -i mysql                          #查看
+   rpm -e --nodeps mysql-libs-5.1.71-1.el6.i686    #卸载
+   ```
+
+4. 在 /usr/local 新建一个文件夹mysql
+
+   ```
+   mkdir /usr/local/mysql
+   ```
+
+5. 把mysql压缩包移动 到/usr/local/mysql
+
+   ```
+   mv MySQL-5.6.22-1.el6.i686.rpm-bundle.tar /usr/local/mysql/
+   ```
+
+6. 进入 /usr/local/mysql,解包mysql(**不要加Z**)
+
+   ```
+   cd /usr/local/mysql
+   tar -xvf MySQL-5.5.49-1.linux2.6.i386.rpm-bundle.tar
+   ```
+
+7. 安装 服务器端
+
+   ```
+   rpm -ivh MySQL-server-5.5.49-1.linux2.6.i386.rpm 
+   ```
+
+8. 安装 客户端 
+
+   ```
+   rpm -ivh MySQL-client-5.5.49-1.linux2.6.i386.rpm 
+   ```
+
+9. 启动Mysql
+
+   ```
+   service mysql start  #启动mysql (注意:只启动一次)  
+   ```
+
+
+
+11. 查看密码:在root目录下 :cat .mysql_secret
+
+    **会生成一个随机密码**
+
+12. 登录mysql **第一次用产生的随机密码登录**
+
+    ```
+    mysql -uroot -p密码
+    ```
+
+13. 修改密码:set password for root@localhost = password('root'); 
+
+14. 放行3306端口号
+
+   ```
+   修改配置文件
+      	cd /etc/sysconfig
+      	vi iptables
+      复制(yy  p)	
+      	-A INPUT -m state --state NEW -m tcp -p tcp --dport 22 -j ACCEPT
+      改成
+      	-A INPUT -m state --state NEW -m tcp -p tcp --dport 3306 -j ACCEPT
+      重启加载防火墙或者重启防火墙
+      	service iptables reload  
+      	或者
+      	service iptables restart
+   ```
+
+15. mysql默认是不允许远程连接的，所以要先设置允许远程连接 mysql
+
+   ```
+    在linux上 先登录mysql	
+      	cd /usr/local/mysql   #进入mysql目录
+      	mysql -uroot -proot    #登录
+      创建远程客户
+      	create user 'root'@'%' identified by 'root';
+      授权
+      	grant all on *.* to 'root'@'%' with grant option;
+      刷新权限
+      	flush privileges;
+   ```
+
+### 
+
+### 八、Redis的安装
 
 
 
