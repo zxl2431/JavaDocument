@@ -68,7 +68,7 @@
 
 
 
-#### 三、网络配置
+#### 2.1、网络配置
 
 #### 1、桥接模式
 
@@ -104,7 +104,7 @@ PEERROUTES=yes
 
 ​	配置完成以后 重启网络命令**systemctl restart network**
 
-### 3、仅主机模式
+#### 	3、仅主机模式
 
 ​	独立IP 不能访问
 
@@ -116,7 +116,71 @@ PEERROUTES=yes
 
 ### 五、JDK安装
 
-​	
+1. 下载jdk  
+
+2. 从windows上传到linux(可以使用FileZilla软件)
+
+3. 检查系统上是否安装了jdk(若安装了就需要先卸载再使用我们自己的)
+
+   ```
+   java -version 
+   ```
+
+4. 查看出安装的java的软件包
+
+   ```
+   rpm -qa | grep java
+   ```
+
+5. 卸载linux自带的jdk
+
+   ```
+   rpm -e --nodeps java-1.6.0-openjdk-1.6.0.0-1.66.1.13.0.el6.i686
+   rpm -e --nodeps java-1.7.0-openjdk-1.7.0.45-2.4.3.3.el6.i686 tzdata-java-2013g-1.el6.noarch
+   ```
+
+6. 在 /usr/local 新建一个文件夹 java
+
+   ```
+   mkdir /usr/local/java
+   ```
+
+7. 移动 jdk-8u171-linux-i586.tar.gz 到 /usr/local/java下
+
+   ```
+   mv jdk-8u171-linux-i586.tar.gz /usr/local/java
+   ```
+
+8. 进入 /usr/local/java 目录,解压jdk到当前目录
+
+   ```
+   cd /usr/local/java 
+   tar -zxvf  jdk-8u171-linux-i586.tar.gz
+   ```
+
+9. 配置环境变量  
+
+   ```
+   vi /etc/profile
+      
+   #在文件的最后面添加如下代码
+   export JAVA_HOME=/usr/local/java/jdk1.8.0_171
+   export PATH=$JAVA_HOME/bin:$PATH
+   ```
+
+10. 保存退出
+
+11. 重新加载配置文件
+
+   ```
+   source /etc/profile
+   ```
+
+
+
+### 六、MySql安装
+
+
 
 
 
