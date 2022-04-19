@@ -178,7 +178,67 @@ PEERROUTES=yes
 
 
 
-### 六、MySql安装
+### 六、Tomcat安装
+
+1. 下载tomcat
+
+2. 上传到linux
+
+3. 在 /usr/local 新建一个文件夹tomcat
+
+   ```
+   mkdir /usr/local/tomcat
+   ```
+
+4. 移动 tomcat...tar.gz 到 /usr/local/tomcat
+
+   ```
+   mv apache-tomcat-8.5.27.tar.gz /usr/local/tomcat/
+   ```
+
+5. 进入/usr/local/tomcat目录,解压Tomcat
+
+   ```
+   cd /usr/local/tomcat
+   tar -zxvf apache-tomcat-8.5.27.tar.gz
+   ```
+
+6. 进入 /usr/local/tomcat/apache-tomcat-8.5.27/bin
+
+   ```
+   cd /usr/local/tomcat/apache-tomcat-8.5.27/bin
+   ```
+
+7. 启动tomcat(执行startup.sh文件)
+
+   ```
+   方式1:
+   	sh startup.sh
+   方式2:
+   	./startup.sh
+   ```
+
+8. 修改防火墙的规则
+
+   ```
+   方式1:service iptables stop  关闭防火墙（太危险了!!!） 
+   方式2:放行8080 端口
+   	修改配置文件
+   		cd /etc/sysconfig
+   		vi iptables
+   			复制(yy , p)	
+   				-A INPUT -m state --state NEW -m tcp -p tcp --dport 22 -j ACCEPT
+   			改成
+   				-A INPUT -m state --state NEW -m tcp -p tcp --dport 8080 -j ACCEPT
+   		重启加载防火墙或者重启防火墙
+   			service iptables reload  
+   			或者
+   			service iptables restart
+   ```
+
+
+
+### 七、MySql安装
 
 
 
