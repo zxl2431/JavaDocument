@@ -332,7 +332,7 @@ PEERROUTES=yes
       	flush privileges;
    ```
 
-### 
+
 
 ### 八、Redis的安装
 
@@ -503,6 +503,12 @@ kill -9  pid
   ```
   ./redis-cli -h ip地址  -p 端口号(6379) shutdown
   ```
+
+
+
+### 九、Oracle安装
+
+#### 	1、
 
 
 
