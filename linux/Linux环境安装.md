@@ -543,9 +543,160 @@ rpm sysstat unixodbc unixodbc-dev unzip x11-utils zlibc unzip cifs-utils \
 libXext.x86_64  glibc.i686
 ```
 
-
-
 #### 3、创建Oracle用户
 
+操作用户: root
+
+```bash
+groupadd -g 502 oinstall
+groupadd -g 503 dba
+groupadd -g 504 oper
+groupadd -g 505 asmadmin
+useradd -u 502 -g oinstall -G oinstall,dba,asmadmin,oper -s /bin/bash -m oracle
+passwd oracle
+```
+
+ 上述命令执行完毕后，为oracle用户设置密码，例如，我这里设置的密码为oracle 
+
+#### 4、解压Oracle数据库安装包
+
+ 操作用户：oracle
+操作目录：/home/oracle 
+
+```
+unzip linux.x64_11gR2_database_1of2.zip
+unzip linux.x64_11gR2_database_2of2.zip
+```
+
+#### 5、修改操作系统配置
+
+ 操作用户：root
+操作文件：/etc/security/limits.conf 
+
+```bash
+vim /etc/security/limits.conf
+```
+
+在文件末尾添加如下配置:
+
+```bash
+oracle          soft      nproc   2047
+oracle          hard      nproc   16384
+oracle          soft      nofile  1024
+oracle          hard      nofile  65536
+oracle          soft      stack   10240
+```
+
+#### 6、创建Oracle安装目录
+
+ 操作用户：oracle 
+
+```bash
+mkdir ~/tools/oracle11g
+```
+
+#### 7、修改环境变量
+
+ 操作用户：oracle
+操作目录：/home/oracle 
+
+```
+vim ~/.bash_profile
+```
+
+ 在文件末尾添加如下配置项 
+
+```bash
+export ORACLE_BASE=/home/oracle/tools/oracle11g
+export ORACLE_HOME=$ORACLE_BASE/product/11.2.0/dbhome_1
+export ORACLE_SID=orcl
+export ORACLE_UNQNAME=orcl
+export NLS_LANG=.AL32UTF8
+export PATH=${PATH}:${ORACLE_HOME}/bin/:$ORACLE_HOME/lib64
+```
+
+ 使得环境变量生效
+
+```bash
+source ~/.bash_profile
+```
+
+#### 8、修改Oracle配置文件
+
+操作用户：oracle
+操作目录：/home/oracle
+
+复制文件模板
+
+```bash
+cp /home/oracle/database/response/db_install.rsp .
+```
+
+**注意：复制命令的最后一个 . 不能省略，表示将db_install.rsp文件从/home/oracle/database/response目录拷贝到当前目录。**
+
+对db_install.rsp文件进行编辑。
+
+ 需要修改的配置项如下所示，这里，我将修改后的配置项列举出来
+
+```bash
+oracle.install.option=INSTALL_DB_AND_CONFIG
+ORACLE_HOSTNAME=localhost #实际上可以修改成你自己的主机名或者域名(IP)
+UNIX_GROUP_NAME=oinstall
+INVENTORY_LOCATION=/home/oracle/tools/oraInventory
+SELECTED_LANGUAGES=en,zh_CN
+ORACLE_HOME=/home/oracle/tools/oracle11g/product/11.2.0/dbhome_1
+ORACLE_BASE=/home/oracle/tools/oracle11g
+oracle.install.db.InstallEdition=EE
+oracle.install.db.DBA_GROUP=dba
+oracle.install.db.OPER_GROUP=oper
+oracle.install.db.config.starterdb.type=GENERAL_PURPOSE
+oracle.install.db.config.starterdb.globalDBName=orcl
+oracle.install.db.config.starterdb.SID=orcl
+oracle.install.db.config.starterdb.characterSet=AL32UTF8
+oracle.install.db.config.starterdb.memoryOption=true
+oracle.install.db.config.starterdb.memoryLimit=1024
+oracle.install.db.config.starterdb.installExampleSchemas=false
+oracle.install.db.config.starterdb.password.ALL=Oracle#123456
+oracle.install.db.config.starterdb.control=DB_CONTROL
+oracle.install.db.config.starterdb.dbcontrol.enableEmailNotification=false
+oracle.install.db.config.starterdb.dbcontrol.emailAddress=test@qq.com #可以填写你自己的邮箱地址
+oracle.install.db.config.starterdb.automatedBackup.enable=false
+oracle.install.db.config.starterdb.storageType=FILE_SYSTEM_STORAGE
+oracle.install.db.config.starterdb.fileSystemStorage.dataLocation=/home/oracle/tools/oracle11g/oradata
+oracle.install.db.config.starterdb.fileSystemStorage.recoveryLocation=/home/oracle/tools/oracle11g/fast_recovery_area
+oracle.install.db.config.starterdb.automatedBackup.enable=false
+DECLINE_SECURITY_UPDATES=true
+
+```
+
+#### 9、静默安装Oracle 11gR2
+
+ 操作用户：oracle
+操作目录：/home/oracle/database 
+
+```bash
+./runInstaller -silent -ignoreSysPrereqs -responseFile /home/oracle/db_install.rsp
+```
+
+ 接下来，就是默默的等待Oracle自行安装了，等待一段时间后，如果输出如下信息，则表明Oracle数据库已经安装成功。 
+
+```bash
+The following configuration scripts need to be executed as the "root" user.
+#!/bin/sh
+#Root scripts to run
+
+/home/oracle/tools/oraInventory/orainstRoot.sh
+/home/oracle/tools/oracle11g/product/11.2.0/dbhome_1/root.sh
+To execute the configuration scripts:
+
+        1. Open a terminal window
+         2. Log in as "root"
+         3. Run the scripts
+         4. Return to this window and hit "Enter" key to continue
+
+Successfully Setup Software.
+```
 
 
+
+#### 10、
