@@ -500,7 +500,7 @@ kill -9  pid
 
 + 或者没有登录客户端情况下,执行(不用掌握)
 
-  ```
+  ```bash
   ./redis-cli -h ip地址  -p 端口号(6379) shutdown
   ```
 
@@ -508,9 +508,44 @@ kill -9  pid
 
 ### 九、Oracle安装
 
-#### 	1、
+#### 	1、关闭防火墙
+
+操作用户: root
+
+```bash
+systemctl stop firewalld.service
+systemctl disable firewalld.service
+```
+
+#### 2、安装依赖包
+
+操作用户: root
+
+```bash
+yum install -y automake autotools-dev binutils bzip2 elfutils expat \
+gawk gcc gcc-multilib g++-multilib lib32ncurses5 lib32z1 \
+ksh less lib32z1 libaio1 libaio-dev libc6-dev libc6-dev-i386 \
+libc6-i386 libelf-dev libltdl-dev libodbcinstq4-1 libodbcinstq4-1:i386 \
+libpth-dev libpthread-stubs0-dev libstdc++5 make openssh-server rlwrap \
+rpm sysstat unixodbc unixodbc-dev unzip x11-utils zlibc unzip cifs-utils \
+libXext.x86_64  glibc.i686
+```
+
+如果报错执行这个安装依赖包
+
+```
+yum install -y automake autotools-dev binutils bzip2 elfutils expat \
+gawk gcc gcc-multilib g++-multilib lib32ncurses5 lib32z1 \
+ksh less lib32z1 libaio1 libaio-dev libc6-dev libc6-dev-i386 \
+libc6-i386 libelf-dev libltdl-dev libodbcinstq4-1 libodbcinstq4-1:i386 \
+libpth-dev libpthread-stubs0-dev libstdc++5 make openssh-server rlwrap \
+rpm sysstat unixodbc unixodbc-dev unzip x11-utils zlibc unzip cifs-utils \
+libXext.x86_64  glibc.i686
+```
 
 
 
-​	
+#### 3、创建Oracle用户
+
+
 
