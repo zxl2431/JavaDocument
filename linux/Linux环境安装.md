@@ -699,4 +699,38 @@ Successfully Setup Software.
 
 
 
-#### 10、
+#### 10、安装完成
+
+操作用户：root
+
+根据上一步完成信息提示，执行以下两行命令，具体位置需要根据你的安装位置决定：
+
+```bash
+/home/oracle/tools/oraInventory/orainstRoot.sh
+/home/oracle/tools/oracle11g/product/11.2.0/dbhome_1/root.sh
+```
+
+#### 11、创建连接用户
+
+ 操作用户：oracle 
+
+```bash
+sqlplus /nolog
+conn /as sysdba
+startup
+```
+
+接下来,执行如下命令
+
+```bash
+alter user system identified by system;
+alter user sys identified by sys;
+```
+
+创建连接用户
+
+```bash
+create user SYNC identified by SYNC;
+grant connect,resource,dba to SYNC;
+```
+
