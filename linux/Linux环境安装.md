@@ -774,3 +774,35 @@ Database opened.
 
 使用Navicat连接Oracleh数据库
 
+```bash
+ORA-12514 TNS:listener does not currently know of service requested in connect descriptor
+```
+
+无论是使用Navicat/PLSQLdeveloper/SQL*PLUS都是报这个
+
+```bash
+# Windows CMD中
+ping 192.168.234.129 1521 #成功
+
+#CentOS中 
+sqlplus SYNC/SYNC #成功 
+
+#修改listener.ora文件
+SID_LIST_LISTENER =
+  (SID_LIST =
+    (SID_DESC =
+      (GLOBAL_DBNAME = orcl)
+      (ORACLE_HOME = /home/oracle/tools/oracle11g/product/11.2.0/dbhome_1)
+      (SID_NAME = orcl)
+    )
+  )
+LISTENER =
+  (DESCRIPTION_LIST =
+    (DESCRIPTION =
+      (ADDRESS = (PROTOCOL = IPC)(KEY = EXTPROC1521))
+      (ADDRESS = (PROTOCOL = TCP)(HOST = 192.168.234.129)(PORT = 1521))
+    )
+  )
+
+```
+
