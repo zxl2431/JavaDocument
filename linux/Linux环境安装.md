@@ -734,3 +734,43 @@ create user SYNC identified by SYNC;
 grant connect,resource,dba to SYNC;
 ```
 
+
+
+### 十、Oracle验证
+
+#### 1、启动数据库
+
+启动已经安装的数据库orcl
+
+操作用户oracle
+启动监听
+
+```bash
+lsnrctl  start
+```
+
+ 启动数据库过程如下： 
+
+```bash
+sqlplus /nolog #创建连接
+connect / as sysdba #使用dba权限连接Oralce
+startup #启动数据库
+
+#确认启动结果：
+ORACLE instance started.
+
+Total System Global Area  534462464 bytes
+Fixed Size                  2215064 bytes
+Variable Size            373293928 bytes
+Database Buffers          150994944 bytes
+Redo Buffers                7958528 bytes
+Database mounted.
+Database opened.
+```
+
+
+
+#### 2、验证数据库
+
+使用Navicat连接Oracleh数据库
+
