@@ -92,8 +92,7 @@ select last_name, job_id from employees where job_id NOT IN ('IT_PROG', 'ST_CLER
 SELECT last_name, job_id, department_id, hire_date from employees order by hire_date;
 SELECT last_name, job_id, department_id, hire_date from employees order by hire_date desc;
 select employee_id, last_name, salary*12 annsal from employees order by annsal;
-
-
+select last_name, department_id, salary from employees order by department_id, salary desc;
 
 ```
 
@@ -103,6 +102,32 @@ select employee_id, last_name, salary*12 annsal from employees order by annsal;
 
 ```sql
 --一行数据对应一个结果就是单行函数
+--字符函数
+select employee_id, last_name, department_id from employees where LOWER(last_name)='higgins';
+select concat('Hello', 'World') from dual;
+select concat(first_name, last_name) from employees;
+select SUBSTR('HelloWorld', 1, 5) from dual;
+select SUBSTR(first_name, 1, 3) FROM employees;
+select INSTR('hELLOWORLD', 'R') from dual;
+select salary, LPAD(salary, 10, '*') from employees;
+--只能去首尾
+select TRIM('h' FROM 'helloworld') from dual;
+select REPLACE('abcda', 'a', 'x') from dual;
+
+select employee_id, concat(first_name, last_name) name, job_id, length(last_name), instr(last_name, 'a') "Contains 'a'?" 
+from employees
+where substr(job_id, 4) = 'REP';
+
+--数字函数
+select round(45.926, 2) from dual; --四舍五入
+select trunc(45.926, 2) from dual; --截断
+select mod(1600, 300) from dual;   --求余
+select round(45.923, 2), round(45.923, 0), round(45.923, -1) from dual;
+select trunc(45.923, 2), trunc(45.923, 0), trunc(45.923, -2) from dual; 
+
+--日期函数
+select hire_date from employees where hire_date = '17-JUNE-1987';
+select last_name, (SYSDATE-hire_date)/7 AS WEEKS from employees where department_id=90;
 ```
 
 
