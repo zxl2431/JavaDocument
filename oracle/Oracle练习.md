@@ -76,11 +76,24 @@ select * from employees e where e.hire_date='17-6月-1987';
 --ORA-01843: not a valid month
 
 --比较运算
-
+select last_name, salary from employees where salary <= 3000;
+select last_name, salary from employees where salary between 2500 and 3000;
+select employee_id, last_name, salary, manager_id from employees where manager_id in (100, 101, 201);
+--%代表零个或多个字符 _代表一个字符
+select first_name from employees where first_name like '%s%';
+select last_name, manager_id from employees where manager_id is null;
+select employee_id, last_name, job_id, salary from employees where salary >= 5000 and job_id like '%MAN%';
+select last_name, job_id from employees where job_id NOT IN ('IT_PROG', 'ST_CLERK', 'SA_REP');
 
 --转义字符 \或# escape
+--select job_id from jobs where job_id like 'ST\_%' escape '\';
 
---排序 order by 
+--排序 order by 别名排序 多个列名排序
+SELECT last_name, job_id, department_id, hire_date from employees order by hire_date;
+SELECT last_name, job_id, department_id, hire_date from employees order by hire_date desc;
+select employee_id, last_name, salary*12 annsal from employees order by annsal;
+
+
 
 ```
 
