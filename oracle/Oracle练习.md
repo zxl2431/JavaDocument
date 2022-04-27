@@ -128,6 +128,65 @@ select trunc(45.923, 2), trunc(45.923, 0), trunc(45.923, -2) from dual;
 --日期函数
 select hire_date from employees where hire_date = '17-JUNE-1987';
 select last_name, (SYSDATE-hire_date)/7 AS WEEKS from employees where department_id=90;
+select months_between('01-sep-95', '01-jan-94') from dual;
+select months_between('01-jan-94', '01-sep-95') from dual;
+select add_months('11-jan-94', 1) from dual;
+select next_day('27-april-2022', 'FRIDAY') from dual;
+select last_day('01-FEB-2022') from dual;
+select ROUND(SYSDATE, 'MONTH') from dual;
+select ROUND(SYSDATE, 'YEAR') from dual;
+select TRUNC(SYSDATE, 'MONTH') fROM DUAL;
+select TRUNC(SYSDATE, 'YEAR') fROM DUAL;
+
+--转换函数
+select sysdate from dual;
+select to_char(sysdate, 'yyyy-mm-dd hh:mi:ss') from dual;
+select hire_date from employees;
+select last_name, to_char(hire_date, 'DD Month YYYY') AS HIREDATE FROM employees;
+select employee_id, last_name, hire_date from employees where to_char(hire_date, 'yyyy-mm-dd')='1987-09-17';
+select TO_DATE('2022年4月23日 08:10:21', 'yyyy"年"mm"月"dd"日" hh:mi:ss') from dual;
+select TO_DATE('2022-4-23', 'yyyy-mm-dd') from dual;
+
+select to_char(salary, '$99,999.00') salary from employees where last_name='Ernst';
+select TO_NUMBER('$1,234,567,890.00','L999,999,999,999.99') from dual;
+
+--通用函数
+select commission_pct from employees;
+select count(commission_pct) from employees;
+--为null去后面的值
+select salary*12*nvl(commission_pct,0) from employees;
+select last_name, salary, nvl(commission_pct, 0), (salary*12) + (salary*12*nvl(commission_pct, 0)) an_sal from employees;
+--不为空返回expr2, 为空返回expr3
+select nvl2(commission_pct, 'SAL+COMM', 'SAL') income from employees;
+--相等返回null, 不相等返回expr1
+select first_name, LENGTH(first_name) "expr1", last_name, LENGTH(last_name) "expr2",
+nullif(LENGTH(first_name), LENGTH(last_name)) "expr3"
+from employees; 
+
+--coalesce函数 哪个不为空返回哪个
+select last_name, commission_pct from employees order by commission_pct;
+select last_name, COALESCE(commission_pct, salary, 10) comm from employees order by commission_pct;
+
+--case表达式
+select last_name, job_id, salary from employees;
+select last_name, job_id, salary, 
+       case job_id when 'IT_PROG'  THEN 1.1*salary
+                   when 'ST_CLERK' THEN 1.2*salary
+                   when 'SA_REP'   THEN 1.3*salary
+       ELSE salary end "REVISED_SALARY" 
+from employees;
+
+--decode函数
+select last_name, job_id, salary from employees;
+select last_name, job_id, salary, 
+       DECODE(job_id, 'IT_PROG',  1.1*salary,
+                      'ST_CLERK', 1.2*salary,
+                      'SA_REP',   1.3*salary,
+                                  salary) "REVISED_SALARY" 
+from employees;
+
+--嵌套函数
+select last_name, nvl(to_char(manager_id), 'No Manager') from employees where manager_id is null;
 ```
 
 
