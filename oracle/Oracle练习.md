@@ -223,6 +223,41 @@ where e.department_id=d.department_id(+); --左外连接 107条数据
 select * from employees e, departments d 
 where e.department_id(+)=d.department_id; --右外连接 122条数据
 
+--自连接
+select * from employees where employee_id = 
+(select manager_id from employees where last_name='Chen');
+
+select worker.last_name || ' works for ' || manager.last_name from employees worker, employees manager 
+where worker.manager_id = manager.employee_id;
+
+--叉集就是笛卡尔集
+select last_name, department_name from employees cross join departments;
+
+--自然连接 NATURAL JOIN,会以两个表中具有相同名字的列为条件创建等值连接
+select department_id, department_name, location_id, city from departments natural join locations;
+
+ select * from employees natural join departments;
+ =
+ select * from employees e, departments dep where e.manager_id=dep.manager_id and e.department_id = dep.department_id;
+ 
+ select * from employees join departments using(department_id);
+ 
+ --使用ON子句创建连接
+ select * from employees e JOIN departments d ON (e.department_id = d.department_id);
+select * from employees e 
+join departments d
+on e.department_id = d.department_id
+join locations l
+on d.location_id = l.location_id; 
+
+-- 内连接(同上)
+-- 外连接(同上)
+select * from employees e left outer join departments d on e.department_id = d.department_id; --107条
+select * from employees e left outer join departments d on e.department_id = d.department_id; --122条
+--满连接
+select * from employees e full outer join departments d on e.department_id = d.department_id; --123条
+
+
 
 ```
 
