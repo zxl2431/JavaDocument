@@ -253,12 +253,44 @@ on d.location_id = l.location_id;
 -- 内连接(同上)
 -- 外连接(同上)
 select * from employees e left outer join departments d on e.department_id = d.department_id; --107条
-select * from employees e left outer join departments d on e.department_id = d.department_id; --122条
+select * from employees e rigth outer join departments d on e.department_id = d.department_id; --122条
 --满连接
 select * from employees e full outer join departments d on e.department_id = d.department_id; --123条
+```
 
+#### 5、分组函数
 
+```sql
+--分组函数 avg count max min stddev, sum 
+select avg(salary), max(salary), min(salary), sum(salary) from employees where job_id like '%REP%';
+select min(hire_date), max(hire_date) from employees;
+select count(*) from employees where department_id = 50;
+--不为空的记录
+select count(commission_pct) from employees;
+--avg()忽略空值
+select avg(commission_pct), sum(commission_pct)/107, sum(commission_pct)/count(commission_pct) from employees;
+--NVL函数使分组函数无法忽略空值
+select avg(nvl(commission_pct, 0)) from employees;
+--非空不重复
+select count(distinct department_id) from employees;
+-- 分组数据 GROUP BY 子句将表中的数据分成若干组
+-- [重要]在select列表中所有未包含在组函数的列都应该包含在GROUP BY子句中.
+select department_id, avg(salary) from employees group by department_id;
+-- 包含在GROUP BY 子句中的列不必包含在select列表中
+select avg(salary) from employees group by department_id;
 
+--非法使用组函数(select列表中未出现在组函数中的列都应该在 GROUP BY 子句中)
+select department_id, count(last_name) from employees;
+-- 非法[where子句中不能使用函数]
+select deparment_id, avg(salary) form employees where AVG(salary) > 8000;
+--非法 不能在WHERE字句中使用组函数, 可以在HAVING子句中
+select department_id, avg(salary) from employees having AVG(salary) > 8000 group by department_id;
+
+-- HAVRING子句
+select department_id, avg(salary) from employees group by department_id having max(salary);
+ 
+--嵌套函数
+select max(avg(salary)) from employees group by department_id ;
 ```
 
 
