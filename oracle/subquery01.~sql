@@ -1,0 +1,24 @@
+--谁的工资比Abel高
+select employee_id, last_name, salary from employees 
+where salary > (
+select salary from employees where last_name='Abel'
+);
+
+--返回job_id与141号员工相同，salary比143号员工多的员工姓名，job_id 和工资
+select last_name, job_id, salary  from employees 
+where job_id = (
+select job_id from employees where employee_id='141'
+) and salary > (
+select salary from employees where employee_id=143
+)
+
+--返回公司工资最少的员工的last_name,job_id和salary
+
+
+
+
+--TOP-N
+select rn,employee_id, last_name, salary from (
+select rownum rn, employee_id, last_name, salary from (
+select employee_id, last_name, salary from employees order by salary desc
+)) where rn>=10 and rn<=20;
