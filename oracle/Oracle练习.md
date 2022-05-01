@@ -293,6 +293,12 @@ select department_id, avg(salary) from employees group by department_id having m
 select max(avg(salary)) from employees group by department_id ;
 ```
 
+#### 6、子查询
+
+```
+
+```
+
 
 
 ### 二、

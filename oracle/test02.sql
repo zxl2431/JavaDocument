@@ -37,3 +37,9 @@ join departments d
 on e.department_id = d.department_id
 join locations l
 on d.location_id = l.location_id; 
+
+--谁的工资比ABLE的高
+select last_name, salary from employees where salary =
+(
+SELECT salary from employees where last_name='Abel';
+);

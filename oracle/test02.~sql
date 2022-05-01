@@ -27,3 +27,13 @@ select * from employees where employee_id =
 
 select worker.last_name || ' works for ' || manager.last_name from employees worker, employees manager 
 where worker.manager_id = manager.employee_id;
+
+--自然连接
+select department_id, department_name, location_id, city from departments natural join locations;
+
+--ON子句
+select * from employees e 
+join departments d
+on e.department_id = d.department_id
+join locations l
+on d.location_id = l.location_id; 
