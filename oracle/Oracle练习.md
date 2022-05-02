@@ -331,3 +331,15 @@ select salary from employees where job_id='IT_PROG') AND job_id <> 'IT_PROG';
 
 ### 二、创建和管理表
 
+```sql
+--用户定义的表
+--查看用户定义的表
+select * from user_tables;
+
+--查看用户定义的各种数据库对象
+select distinct object_type from user_objects;
+
+--查看用户定义的表 视图 同义词和序列
+select * from user_catalog;
+```
+
