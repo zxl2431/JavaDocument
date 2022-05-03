@@ -25,7 +25,11 @@ select min(salary) from employees where department_id = 50
 );
 
 --返回其它部门中比job_id为‘IT_PROG’部门任一工资低的员工的员工号、姓名、job_id 以及salary
-
+select employee_id, last_name, job_id, salary 
+from employees 
+where salary < ALL (
+select salary from employees where job_id = 'IT_PROG'
+) AND job_id <> 'IT_PROG';
 
 --TOP-N
 select rn,employee_id, last_name, salary from (

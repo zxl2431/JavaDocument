@@ -13,8 +13,18 @@ select salary from employees where employee_id=143
 )
 
 --返回公司工资最少的员工的last_name,job_id和salary
+select last_name, job_id, salary 
+from employees where salary = ( 
+select min(salary) from employees
+) 
 
+--查询最低工资大于50号部门最低工资的部门id和其最低工资
+select department_id, min(salary) from employees group by department_id
+having min(salary) > ( 
+select min(salary) from employees where department_id = 50
+);
 
+--返回其它部门中比job_id为‘IT_PROG’部门任一工资低的员工的员工号、姓名、job_id 以及salary
 
 
 --TOP-N
