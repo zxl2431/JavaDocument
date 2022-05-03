@@ -19,8 +19,12 @@ create table emp1 as select * from employees;
 --复制表结构不要表数据
 create table emp2 as select * from employees where 1=2;
 --使用子查询创建表
+create table dept2 
+as
+select employee_id, last_name, salary*12 ANNSAL, hire_date from employees where department_id=80;
 
+--表修改语句 ALTER TABLE table ADD/MODIFY/DROP/RENAME...TO
+--
 
-select * from emp1;
 
 

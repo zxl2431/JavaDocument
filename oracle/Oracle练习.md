@@ -1,6 +1,6 @@
 ## Oracle笔记
 
-### 一、DML练习
+### 一、DML练习-SELECT语句
 
 #### 1、SELECT基本操作
 
@@ -331,6 +331,8 @@ select salary from employees where job_id='IT_PROG') AND job_id <> 'IT_PROG';
 
 ### 二、创建和管理表
 
+#### 1、创建-修改-删除表
+
 ```sql
 --查看用户定义的表
 select * from user_tables;
@@ -378,6 +380,71 @@ truncate table emp1;
 select * from emp1;
 rename emp1 to detail_dept;
 select * from detail_dept;
+
+```
+
+
+
+### 三、DML-更新,删除,插入
+
+#### 1、插入数据
+
+```sql
+--插入数据 复制department
+--插入全部列数
+insert into dept1(department_id, department_name, manager_id, location_id)
+values(20, 'testdept', 100, 1900);
+--隐式插入空值
+insert into dept1(department_id, department_name)
+values(30, 'testdept02'); 
+--显示插入空值
+insert into dept1 values (40,'Finance', null, null);
+
+--插入数据 复制employees表
+create table emp1 as 
+select * from employees where 1=2;
+
+INSERT INTO emp1 (employee_id, 
+                 first_name, last_name, 
+                 email, phone_number,
+                 hire_date, job_id, salary, 
+                 commission_pct, manager_id,
+                 department_id)
+VALUES (
+       113,
+       'Louis', 'Popp',
+       '123@qq.com', '13112345678',
+       SYSDATE, '001', 6900,
+       NULL, 201, 100
+);
+
+insert into emp1 
+values (
+       114, 
+       'Den', 'Raphealy',
+       'DRAPHEAL@qq.com', '13111111111',
+       to_date('FEB 3, 1999', 'MON DD, YYYY'), '001', 7100, NULL, 202, 100
+)
+
+
+select * from emp1;
+
+--创建脚本插入值
+select * from dept1;
+insert into dept1(department_id, department_name, location_id) 
+values (&department_id, '&department_name', &location);
+
+--从其他表中拷贝数据
+insert into emp1 
+select * from employees where department_id=90;
+
+```
+
+
+
+#### 2、更新数据
+
+```sql
 
 ```
 
