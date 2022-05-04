@@ -558,3 +558,18 @@ select constraint_name, constraint_type, search_condition from user_constraints 
 SELECT constraint_name, column_name from user_cons_columns where table_name='EMPLOYEES';
 ```
 
+
+
+### 五、视图
+
+#### 1、view
+
+```sql
+--视图是一种虚表, 建立在已有表(基表)的基础上
+--创建视图
+create view empvu01 as 
+select employee_id, last_name, salary from employees where department_id = 90;
+
+select * from empvu01;
+```
+

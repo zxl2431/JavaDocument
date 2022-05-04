@@ -16,5 +16,17 @@ select job_id, salary from employees where employee_id ='114';
 select job_id, salary from employees where employee_id ='205';
 
 --调整与employee_id 为200的员工job_id相同的员工的department_id为employee_id为100的员工的department_id
-update emp1 
+create table employees_copy as select * from employees;
+select count(*) from employees_copy;
+
+update employees_copy set department_id = (
+select department_id from employees_copy  where employee_id = 100
+) where job_id = (
+select job_id from employees where employee_id = 200
+)
+
+select distinct department_id from employees_copy;
+ 
+
+
 
