@@ -37,6 +37,12 @@ values (
 
 select * from emp1;
 
---创建脚本
+--创建脚本插入值
+select * from dept1;
+insert into dept1(department_id, department_name, location_id) 
+values (&department_id, '&department_name', &location);
 
+--从其他表中拷贝数据
+insert into emp1 
+select * from employees where department_id=90;
 
