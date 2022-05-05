@@ -571,5 +571,24 @@ create view empvu01 as
 select employee_id, last_name, salary from employees where department_id = 90;
 
 select * from empvu01;
+
+--创建视图时在子查询中给列定义别名
+create view empvu02 as 
+select employee_id ID_NUMBER, last_name NAME, salary*12 ANN_SALARY from employees where department_id=50;
+
+select * from empvu02;
+
+--如果我在employees表中插入一条数据 在视图中能查到
+select * from employees;
+insert into employees values(901, 'James','Lebu', 'aaa', 1221212, sysdate, 'AC_MGR', 12000, NULL, 100, 50);
+commit;
+
+--修改视图
+create or replace view empvu01(id_number, name, sal, department_id)
+as select employee_id, first_name|| ' ' || last_name, salary, department_id from employees where department_id = 90;
+
+select * from empvu01;
+
+
 ```
 
