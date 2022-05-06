@@ -16,3 +16,8 @@ select * from employees;
 insert into employees values(901, 'James','Lebu', 'aaa', 1221212, sysdate, 'AC_MGR', 12000, NULL, 100, 50);
 commit;
 
+--–ﬁ∏ƒ ”Õº
+create or replace view empvu01(id_number, name, sal, department_id)
+as select employee_id, first_name|| ' ' || last_name, salary, department_id from employees where department_id = 90;
+
+select * from empvu01;
