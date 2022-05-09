@@ -196,7 +196,157 @@ OK
 
 
 
+#### 3、Set 
 
+set里面的值不能重复, 无序
+
+```bash
+#######################################################
+127.0.0.1:6379> keys *
+(empty list or set)
+127.0.0.1:6379> sadd myset hello 	#往set添加值
+(integer) 1
+127.0.0.1:6379> sadd myset mr.zhang
+(integer) 1
+127.0.0.1:6379> sadd myset world
+(integer) 1
+127.0.0.1:6379> smembers myset	#查看set所有值
+1) "world"
+2) "hello"
+3) "mr.zhang"
+127.0.0.1:6379> sismember myset hello #看set里面是否有某个值
+(integer) 1
+127.0.0.1:6379> sismember myset nihao
+(integer) 0
+127.0.0.1:6379> scard myset #获取set集合中的元素的个数
+(integer) 3
+127.0.0.1:6379> srem myset hello #移除set中的某个元素
+(integer) 1
+127.0.0.1:6379> smembers myset #
+1) "world"
+2) "mr.zhang"
+
+
+#######################################################
+127.0.0.1:6379> sadd myset hello 
+(integer) 1
+127.0.0.1:6379> sadd myset hello1 
+(integer) 1
+127.0.0.1:6379> sadd myset hello2
+(integer) 1
+127.0.0.1:6379> srandmember myset #随机获取set里面的一个值
+"world"
+127.0.0.1:6379> srandmember myset
+"hello1"
+127.0.0.1:6379> srandmember myset
+"hello2"
+127.0.0.1:6379> srandmember myset 2
+1) "world"
+2) "hello"
+127.0.0.1:6379> srandmember myset 2
+1) "mr.zhang"
+2) "hello2"
+
+
+#######################################################
+127.0.0.1:6379> spop myset #随机移除set中的一个值
+"hello2"
+127.0.0.1:6379> smembers myset
+1) "mr.zhang"
+2) "world"
+3) "hello"
+4) "hello1"
+127.0.0.1:6379> smembers myset
+1) "mr.zhang"
+2) "world"
+3) "hello"
+4) "hello1"
+127.0.0.1:6379> spop myset
+"mr.zhang"
+127.0.0.1:6379> smembers myset
+1) "world"
+2) "hello"
+3) "hello1"
+
+#######################################################
+移动一个指定的值,到另外一个set集合中
+127.0.0.1:6379> keys *
+(empty list or set)
+127.0.0.1:6379> sadd myset hello
+(integer) 1
+127.0.0.1:6379> sadd myset world
+(integer) 1
+127.0.0.1:6379> sadd myset hello1
+(integer) 1
+127.0.0.1:6379> sadd myset hello2
+(integer) 1
+127.0.0.1:6379> smembers
+(error) ERR wrong number of arguments for 'smembers' command
+127.0.0.1:6379> smembers myset
+1) "hello1"
+2) "world"
+3) "hello"
+4) "hello2"
+127.0.0.1:6379> sadd myset2 myset2
+(integer) 1
+127.0.0.1:6379> smove myset myset2 "world" #移动set集合中的某个值到另外一个集合中
+(integer) 1
+127.0.0.1:6379> smembers myset
+1) "hello1"
+2) "hello"
+3) "hello2"
+127.0.0.1:6379> smembers myset2
+1) "world"
+2) "myset2"
+
+#######################################################
+叉集 交集 并集
+127.0.0.1:6379> keys *
+(empty list or set)
+127.0.0.1:6379> sadd key1 a
+(integer) 1
+127.0.0.1:6379> sadd key1 a
+(integer) 0
+127.0.0.1:6379> sadd key1 b
+(integer) 1
+127.0.0.1:6379> sadd key1 c
+(integer) 1
+127.0.0.1:6379> sadd key1 d
+(integer) 1
+127.0.0.1:6379> sadd key2 c 
+(integer) 1
+127.0.0.1:6379> sadd key2 d
+(integer) 1
+127.0.0.1:6379> sadd key2 e
+(integer) 1
+127.0.0.1:6379> sadd key2 f
+(integer) 1
+127.0.0.1:6379> sdiff key1 key2 #叉集
+1) "b"
+2) "a"
+127.0.0.1:6379> sdiff key2 key1
+1) "f"
+2) "e"
+127.0.0.1:6379> sinter key1 key2 #交集 共同好友就可以这样实现
+1) "d"
+2) "c"
+127.0.0.1:6379> sunion key1 key2 #并集
+1) "c"
+2) "f"
+3) "b"
+4) "a"
+5) "d"
+6) "e"
+#######################################################
+```
+
+
+
+#### 4、Hash
+
+```bash
+
+```
 
 
 
