@@ -541,5 +541,37 @@ Zset 比set多了一个排序 存储班级成绩表 工资表排序 带权重执
 
 ### 六、三种特殊数据类型
 
+#### 1、geospatial
 
+​	地理位置, 朋友的定位,附近的人,打车距离. Redis3.2版本就推出了. 
+
+​	可以计算两地之间的距离
+
+​	位置信息的底层是现实其实就是Zset.可以使用Zset来操作geo
+
+```bash
+#########################################################
+#规则:两级无法直接添加 java程序可以通过配置文件一次导入
+geoadd china:city 116.40 39.90 beijin #添加城市经纬度 180到-180 85到-85
+
+geopos china:city beijin #获取指定的城市的经纬度
+
+geodist china:city beijin shanghai km #定位距离 单位m km 
+
+georadius chian:city 110 30 1000 km withdist  #附近的人 参数 以某个经纬度为中心 半径 多少
+
+georadiusbymember china:city beijing 1000 km # 找出位于指定元素周围的城市
+
+geohash china:city beijing chongqing # 返回的当前城市的经纬度转换成一维的字符串
+```
+
+
+
+#### 2、Hyperloglog
+
+
+
+```bash
+
+```
 
