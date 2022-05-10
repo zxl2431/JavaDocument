@@ -344,6 +344,113 @@ set里面的值不能重复, 无序
 
 #### 4、Hash
 
+Map集合, key-map 
+
+hash更适合对象的存储
+
+```bash
+#######################################################
+127.0.0.1:6379> hset myhash field1 zhang #设置一个Key-value
+(integer) 1
+127.0.0.1:6379> hget myhash field1
+"zhang"
+127.0.0.1:6379> hmset myhash field1 hello field2 world #设置多个
+OK
+127.0.0.1:6379> hmget myhash field1 field2 #获取
+1) "hello"
+2) "world"
+127.0.0.1:6379> hgetall myhash
+1) "field1"
+2) "hello"
+3) "field2"
+4) "world"
+127.0.0.1:6379> hdel myhash field1
+(integer) 1
+127.0.0.1:6379> hgetall
+(error) ERR wrong number of arguments for 'hgetall' command
+127.0.0.1:6379> hgetall myhash
+1) "field2"
+2) "world"
+127.0.0.1:6379> hlen myhash
+(integer) 1
+127.0.0.1:6379> hexists myhash field1
+(integer) 0
+127.0.0.1:6379> hexists myhash field2
+(integer) 1
+
+
+#######################################################
+127.0.0.1:6379> hset myhash field1 hello
+(integer) 1
+127.0.0.1:6379> hset myhash field3 zhang
+(integer) 1
+127.0.0.1:6379> hgetall myhash
+1) "field2"
+2) "world"
+3) "field1"
+4) "hello"
+5) "field3"
+6) "zhang"
+127.0.0.1:6379> hkeys myhash
+1) "field2"
+2) "field1"
+3) "field3"
+127.0.0.1:6379> hvals myhash
+1) "world"
+2) "hello"
+3) "zhang"
+127.0.0.1:6379> hset myhash field4 5
+(integer) 1
+127.0.0.1:6379> hgetall myhash
+1) "field2"
+2) "world"
+3) "field1"
+4) "hello"
+5) "field3"
+6) "zhang"
+7) "field4"
+8) "5"
+127.0.0.1:6379> hincrby myhash field4 1
+(integer) 6
+127.0.0.1:6379> hincrby myhash field4 -2
+(integer) 4
+127.0.0.1:6379> hsetnx myhash field5 yi #是否存在
+(integer) 1
+127.0.0.1:6379> hgetall myhash
+ 1) "field2"
+ 2) "world"
+ 3) "field1"
+ 4) "hello"
+ 5) "field3"
+ 6) "zhang"
+ 7) "field4"
+ 8) "4"
+ 9) "field5"
+10) "yi"
+
+#######################################################
+127.0.0.1:6379> hmset user:1 name zhang age 18
+OK
+127.0.0.1:6379> hgetall user:1
+1) "name"
+2) "zhang"
+3) "age"
+4) "18"
+127.0.0.1:6379> hget user:1 nage
+(nil)
+127.0.0.1:6379> hget user:1 name
+"zhang"
+#######################################################
+```
+
+
+
+#### 5、Zset有序集合
+
+set k1 v1
+
+zset k1 score v1
+
 ```bash
 
 ```
