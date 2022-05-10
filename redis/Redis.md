@@ -452,10 +452,88 @@ set k1 v1
 zset k1 score v1
 
 ```bash
+#######################################################
+127.0.0.1:6379> keys *
+(empty list or set)
+127.0.0.1:6379> zadd myset 1 one
+(integer) 1
+127.0.0.1:6379> zadd myset 2 two 3 three
+(integer) 2
+127.0.0.1:6379> zrange myset 0 -1
+1) "one"
+2) "two"
+3) "three"
+127.0.0.1:6379> zadd salary 2500 xianghong 5000 zhangsan 200 lisi
+(integer) 3
+127.0.0.1:6379> zrange salary 0 -1
+1) "lisi"
+2) "xianghong"
+3) "zhangsan"
+127.0.0.1:6379> zrangebyscore salary -inf +inf
+1) "lisi"
+2) "xianghong"
+3) "zhangsan"
+127.0.0.1:6379> zrevrange salary 0 -1
+1) "zhangsan"
+2) "xianghong"
+3) "lisi"
+127.0.0.1:6379> zrangebyscore salary -inf +inf withscores
+1) "lisi"
+2) "200"
+3) "xianghong"
+4) "2500"
+5) "zhangsan"
+6) "5000"
+127.0.0.1:6379> zrangebyscore salary -inf 2500 withscores
+1) "lisi"
+2) "200"
+3) "xianghong"
+4) "2500"
+
+#######################################################
+127.0.0.1:6379> zrange salary 0 -1
+1) "lisi"
+2) "xianghong"
+3) "zhangsan"
+127.0.0.1:6379> zrange myset 0 -1
+1) "one"
+2) "two"
+3) "three"
+127.0.0.1:6379> zrem myset one
+(integer) 1
+127.0.0.1:6379> zrange myset 0 -1
+1) "two"
+2) "three"
+
+#######################################################
+127.0.0.1:6379> keys *
+1) "salary"
+2) "myset"
+127.0.0.1:6379> zcard salary
+(integer) 3
+127.0.0.1:6379> zcard myset
+(integer) 2
+
+#######################################################
+127.0.0.1:6379> zcount myset 1 3
+(integer) 2
+127.0.0.1:6379> zgetall myset
+(error) ERR unknown command 'zgetall'
+127.0.0.1:6379> zrange myset 0 -1
+1) "two"
+2) "three"
+127.0.0.1:6379> zadd myset 4 four
+(integer) 1
+127.0.0.1:6379> zadd myset 5 five
+(integer) 1
+127.0.0.1:6379> zcount myset 1 4
+(integer) 3
+#########################################################
+
 
 ```
 
-
+Zset 比set多了一个排序 存储班级成绩表 工资表排序 带权重执行 Top-N
 
 
 
