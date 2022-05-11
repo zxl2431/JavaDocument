@@ -638,5 +638,108 @@ OK
 
 
 
+### 七、Redis事务
 
+#### 1、什么是事务
+
+	>事务的本质 = 一组命令的集合!
+
+​	==Redis事务没有隔离级别的概念==
+
+​	要么同时成功,要么同时失败, 原子性. 
+
+​	==Redis单条命令是原子性, 事务是没有原子性的==
+
+#### 2、Redis事务开启
+
+- 开启事务 (multi)
+- 命令入队 (....)
+- 执行事务 (exec)
+
+```bash
+###########################################################
+127.0.0.1:6379> multi
+OK
+127.0.0.1:6379> set k1 v1
+QUEUED
+127.0.0.1:6379> set k2 v2
+QUEUED
+127.0.0.1:6379> get k2
+QUEUED
+127.0.0.1:6379> set k3 v3
+QUEUED
+127.0.0.1:6379> exec
+1) OK
+2) OK
+3) "v2"
+4) OK
+################################################################
+#取消事务
+127.0.0.1:6379> multi 
+OK
+127.0.0.1:6379> set k1 v1
+QUEUED
+127.0.0.1:6379> set k2 v2 
+QUEUED
+127.0.0.1:6379> set k4 v4
+QUEUED
+127.0.0.1:6379> discard
+OK
+127.0.0.1:6379> get k4
+(nil)
+127.0.0.1:6379> get k3
+"v3"
+################################################################
+```
+
+
+
+#### 4、Redis事务异常
+
+	>编译异常(语法有问题, 命令有问题), 事务中所有的命令都不会被执行
+
+```bash
+### 所有的命令都不会执行
+127.0.0.1:6379> multi
+OK
+127.0.0.1:6379> set k1 v1
+QUEUED
+127.0.0.1:6379> set k2 v2
+QUEUED
+127.0.0.1:6379> getset k3
+(error) ERR wrong number of arguments for 'getset' command
+127.0.0.1:6379> set k4 v4
+QUEUED
+127.0.0.1:6379> exec
+(error) EXECABORT Transaction discarded because of previous errors.
+127.0.0.1:6379> get k1
+(nil)
+```
+
+
+
+>运行时异常(1/0)  异常的语句不会让它异常,其他的语句还是执行
+
+```bash
+127.0.0.1:6379> keys *
+(empty list or set)
+127.0.0.1:6379> set k1 v1
+OK
+127.0.0.1:6379> multi
+OK
+127.0.0.1:6379> incr k1 #只能对数字进行加减
+QUEUED
+127.0.0.1:6379> set k2 v2
+QUEUED
+127.0.0.1:6379> set k3 v3
+QUEUED
+127.0.0.1:6379> get k3
+QUEUED
+127.0.0.1:6379> exec
+1) (error) ERR value is not an integer or out of range
+2) OK
+3) OK
+4) "v3"
+
+```
 
