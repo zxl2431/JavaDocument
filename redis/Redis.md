@@ -761,3 +761,42 @@ QUEUED
 
 #### 2、Redis的watch 
 
+```bash
+### 第一个客户端
+127.0.0.1:6379> keys *
+(empty list or set)
+127.0.0.1:6379> set money 100
+OK
+127.0.0.1:6379> set out 0
+OK
+127.0.0.1:6379> watch money 	### 监视money
+OK
+127.0.0.1:6379> multi
+OK
+127.0.0.1:6379> decrby money 20
+QUEUED
+127.0.0.1:6379> incrby out 20
+QUEUED
+127.0.0.1:6379> exec 	### 在这个区间money没有变化 执行成功
+1) (integer) 80
+2) (integer) 20
+
+
+### 第一个客户端
+127.0.0.1:6379> watch money
+OK
+127.0.0.1:6379> multi 
+OK
+127.0.0.1:6379> decrby money 1
+QUEUED
+127.0.0.1:6379> incrby out 1 ### 还没有执行的时候 第二个客户端 改变了money
+QUEUED
+127.0.0.1:6379> exec
+(nil)
+
+### 第二个客户端
+127.0.0.1:6379> incrby money 10
+(integer) 90
+
+```
+
