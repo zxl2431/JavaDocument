@@ -800,3 +800,136 @@ QUEUED
 
 ```
 
+
+
+### 九、Jedis
+
+没啥好写的
+
+
+
+### 十、SpringBoot
+
+​	SpringBoot操作数据: spring-data jpa jdbc  mongodb redis
+
+
+
+### 十一、Redis配置文件
+
+>Redis.conf文件
+
+​	1、配置文件大小写不敏感
+
+![1652451366979](Redis.assets/1652451366979.png)
+
+​	2、包含 可以包含其他的配置文件
+
+![1652451844895](Redis.assets/1652451844895.png)
+
+​	3、网络/通用配置
+
+```bash
+bind 127.0.0.1 	#指定可以访问的ip
+port 6379 	#端口号 设置
+
+daemonize yes #以守护进程的方式运行, 默认是no 需要手动开启为yes!
+
+pidfile /var/run/redis.pid #如果以后台的方式运行, 需要指定一个pid文件
+
+# Specify the server verbosity level.
+# This can be one of:
+# debug (a lot of information, useful for development/testing)
+# verbose (many rarely useful info, but not a mess like the debug level)
+# notice (moderately verbose, what you want in production probably)
+# warning (only very important / critical messages are logged)
+loglevel notice 	#日志级别
+
+# Specify the log file name. Also the empty string can be used to force
+# Redis to log on the standard output. Note that if you use standard
+# output for logging but daemonize, logs will be sent to /dev/null
+logfile ""  #日志输出的位置
+```
+
+
+
+ 4、快照
+
+持久化,在规定的时间内,执行了多少次操作, 则会持久化到文件 .rdb .aof
+
+```bash
+# 如果900秒内,如果至少1个key进行了修改, 进行持久化操作
+save 900 1
+# 300秒内 10次key的修改 持久化操作
+save 300 10
+# 60秒内, 10000次
+save 60 10000
+
+stop-writes-on-bgsave-error yes #持久化如果出错,是否还需要继续工作
+
+rdbcompression yes # 是否压缩rdb文件, 需要消耗一些cpu资源
+
+rdbchecksum yes # 保存rdb文件的时候,进行错误的检查校验
+
+dbfilename dump.rdb # 文件名
+
+dir ./ #rdb文件保存的目录
+
+
+```
+
+
+
+5、REPLICATION 复制
+
+​	主从复制
+
+
+
+6、SECURITY 安全
+
+默认没有密码
+
+```bash
+requirepass foobared #用命令来设置 config set requirepass/ config get requirepass/auth 123
+```
+
+
+
+7、LIMITS限制
+
+```bash
+# maxclients 10000
+# maxmemory <bytes>
+
+# MAXMEMORY POLICY: how Redis will select what to remove when maxmemory
+# is reached. You can select among five behaviors:
+#
+# volatile-lru -> remove the key with an expire set using an LRU algorithm
+# allkeys-lru -> remove any key according to the LRU algorithm
+# volatile-random -> remove a random key with an expire set
+# allkeys-random -> remove a random key, any key
+# volatile-ttl -> remove the key with the nearest expire time (minor TTL)
+# noeviction -> don't expire at all, just return an error on write operations
+
+
+```
+
+
+
+8、APPEND ONLY MODE 模式 aof配置
+
+```bash
+appendonly no # 默认是不开启aof模式的,默认使用rdb方式持久化, 在大部分情况下, rdb完全够用
+appendfilename "appendonly.aof" #持久化的文件名称
+
+# appendfsync always
+appendfsync everysec #每秒追加一次 可能会损失这1秒的数据
+# appendfsync no
+
+
+```
+
+
+
+### 十二、Redis持久化
+
