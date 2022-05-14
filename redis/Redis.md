@@ -1005,10 +1005,13 @@ save 60 10000
 #默认是不开启的
 appendonly no
 
-# 追加的时间间隔 每秒追加 
-appendfsync 
+# 追加的时间间隔 每秒追加
+# appendfsync always #每次修改都会sync 消耗性能
+appendfsync everysec
+# appendfsync no  # 不执行sync 这个时候OS自己同步数据, 速度最快
 
-#重写规则
+#重写规则 (了解即可)
+# rewrite 
 
 ```
 
@@ -1028,6 +1031,47 @@ redis-check-aof --fix appendonly.aof
 
 
 
+> AOF优点
 
+​	1、每一次修改都同步, 文件的完整性会更好
 
 ​	
+
+> AOF缺点
+
+​	1、相对于数据文件来说, aof远远大于rdb 
+
+​	2、AOF运行效率也要比rdb低很多, 所以Redis默认是RDB
+
+
+
+### 十三、订阅发布
+
+​	Redis发布订阅(pub/sub是一种消息通信模式): 发送者pub发布消息,订阅者sub接受消息
+
+​	Redis客户端可以订阅任意数量的频道
+
+​	![1652544817353](Redis.assets/1652544817353.png)
+
+
+
+```bash
+### 一台客户端
+127.0.0.1:6379> subscribe News
+Reading messages... (press Ctrl-C to quit)
+1) "subscribe"
+2) "News"
+3) (integer) 1
+#----------------------------------------------
+1) "message"
+2) "News"
+3) "Today is a first day news"
+
+### 二台客户端
+127.0.0.1:6379> clear
+127.0.0.1:6379> publish News "Today is a first day news"
+(integer) 1
+
+
+```
+
