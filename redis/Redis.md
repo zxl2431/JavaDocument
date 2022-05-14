@@ -999,3 +999,35 @@ save 60 10000
 
 #### 2、持久化之AOF 
 
+​	==Append Only File==将所有的命令都记录下来. 以日志的形式来记录每个**写**操作. 
+
+```bash
+#默认是不开启的
+appendonly no
+
+# 追加的时间间隔 每秒追加 
+appendfsync 
+
+#重写规则
+
+```
+
+
+
+> 破坏appendonly.aof文件
+
+​	appendonly.aof文件如果有问题, redis启动不起来
+
+> 修复appendonly.aof文件
+
+```bash
+# redis提供的工具 
+redis-check-aof --fix appendonly.aof
+
+```
+
+
+
+
+
+​	
