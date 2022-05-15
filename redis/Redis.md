@@ -1075,3 +1075,64 @@ Reading messages... (press Ctrl-C to quit)
 
 ```
 
+
+
+### 十四、主从复制
+
+​	主从复制, 是指将一台Redis服务器的数据, 复制到其他的Redis服务器.前置称为主节点,后者称为从节点; 数据的复制是单向的, 只能从主节点到从节点. master一写为主, Slaver以读为主. 
+
+​	默认情况下, 每台Redis服务器都是主节点; 且一个主节点可以有多个从节点(或者没有从节点), 但一个从节点只能有一个主节点. 
+
+​	主从复制的作用主要包括:
+
+- 数据冗余 : 主从复制实现了数据的热备份, 是持久化之外的一种数据冗余方式
+- 故障恢复 : 当主节点出问题时, 可以由从节点提供服务, 实现快速的故障恢复; 实际上是一种服务的冗余
+- 负载均衡 : 在主从复制的基础上, 配合读写分离, 可以由主节点提供**写**服务, 由从节点提供**读**服务(即写Redis数据时应用连接主节点, 读Redis数据时应用连接从节点)
+- 高可用基石 : 除了上述作用之外, 主从复制还是**哨兵和集群**能够实施的基础, 也可以说主从复制是Redis高可用的基础
+
+
+
+> 伪集群的搭建
+
+​	多写几个redis.conf文件 
+
+![1652623710845](Redis.assets/1652623710845.png)
+
+redis.conf文件需要修改的地方
+
+```bash
+port 6379 #端口号
+daemonize yes  #后台运行
+#pidfile /var/run/redis.pid #pidfile文件
+pidfile /var/run/redis_6379.pid
+#logfile "" #日志文件
+logfile "6379.log"
+#dbfilename dump.rdb # dump文件名修改
+dbfilename dump_6379.rdb
+
+### 修改完成以后 启动
+redis-server redisxxx.conf
+
+```
+
+![1652625090296](Redis.assets/1652625090296.png)
+
+
+
+**环境配置**
+
+```bash
+# 查看当前库的信息
+127.0.0.1:6379> clear
+127.0.0.1:6379> info replication
+# Replication
+role:master
+connected_slaves:0
+master_repl_offset:0
+repl_backlog_active:0
+repl_backlog_size:1048576
+repl_backlog_first_byte_offset:0
+repl_backlog_histlen:0
+
+```
+
