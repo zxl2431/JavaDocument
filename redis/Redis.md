@@ -1112,6 +1112,8 @@ dbfilename dump_6379.rdb
 
 ### 修改完成以后 启动
 redis-server redisxxx.conf
+### 客户端连接 
+redis-cli -p 6379
 
 ```
 
@@ -1135,4 +1137,83 @@ repl_backlog_first_byte_offset:0
 repl_backlog_histlen:0
 
 ```
+
+
+
+**一主三从**
+
+​	默认情况下, 每台Redis服务器都是主节点master, 配置只需要配置从机 
+
+​	一Master(6379) 
+
+```bash
+### 查看一主三从的 信息
+info replication # 都是master
+
+
+### 配置三个从机 认6379为老大
+slaveof 127.0.0.1 6379 
+
+
+# 主机的
+127.0.0.1:6379> info replication
+# Replication
+role:master
+connected_slaves:3
+slave0:ip=127.0.0.1,port=6380,state=online,offset=71,lag=1
+slave1:ip=127.0.0.1,port=6381,state=online,offset=71,lag=0
+slave2:ip=127.0.0.1,port=6382,state=online,offset=71,lag=1
+master_repl_offset:71
+repl_backlog_active:1
+repl_backlog_size:1048576
+repl_backlog_first_byte_offset:2
+repl_backlog_histlen:70
+127.0.0.1:6379> 
+
+#从机的
+127.0.0.1:6380> info replication
+# Replication
+role:slave
+master_host:127.0.0.1
+master_port:6379
+master_link_status:up
+master_last_io_seconds_ago:0
+master_sync_in_progress:0
+slave_repl_offset:155
+slave_priority:100
+slave_read_only:1
+connected_slaves:0
+master_repl_offset:0
+repl_backlog_active:0
+repl_backlog_size:1048576
+repl_backlog_first_byte_offset:0
+repl_backlog_histlen:0
+127.0.0.1:6380> 
+
+
+
+```
+
+
+
+> 现在的主从配置是通过命令配置的, 是暂时的. 需要永久的是修改配置文件
+
+```bash
+# slaveof <masterip> <masterport>
+
+```
+
+> 细节
+
+​	主机可以写, 从机只能读! 主机中的所有信息和数据,从机都有.
+
+- 主机断开连接,从机依旧连接到主机的,但是没有写操作. 这时候主机回来了,一切继续
+- 如果是使用命令行配置的主从, 从机断了, 再重启就变成了主机, 断开这段事件, 主机写入的数据不能拿到, **但是当再次配置成从机**则数据马上跟主机一样
+
+
+
+> 复制原理
+
+- 全量复制 : 只要重新连接到主机 触发sync
+- 增量复制
 
